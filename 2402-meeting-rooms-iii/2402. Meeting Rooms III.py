@@ -21,5 +21,5 @@ class Solution:
             
             meetings_dict[room] += 1
 
-        print(meetings_dict)
+        # print(meetings_dict)
         return meetings_dict.index(max(meetings_dict))
