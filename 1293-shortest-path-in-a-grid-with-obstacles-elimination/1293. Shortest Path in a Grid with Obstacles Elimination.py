@@ -1,37 +1,32 @@
 class Solution:
     def shortestPath(self, grid: List[List[int]], k: int) -> int:
-        # use bfs with state machine and solve
-        # TC = O(N*K)
+        m, n = len(grid), len(grid[0])
         q = collections.deque()
 
-        r, c = len(grid), len(grid[0]) 
-        
+        q.append((0, 0, 0, 0)) # x, y, k, steps
+        dirs = [[0, 1], [0, -1], [1, 0], [-1, 0]]
         vis = set()
-        state = (0, 0, 0)
-        vis.add(state)
-
-        q.append((state, 0))
-        dirs = [[0, 1], [0, -1], [-1, 0], [1, 0]]
 
         while q:
-            state, dist = q.popleft()
+            x, y, k_, steps = q.popleft()
+            
+            if (x, y) == (m-1, n-1):
+                return steps
+            
+            for dir in dirs:
+                nx = x + dir[0]
+                ny = y + dir[1]
+                
 
-            x, y, k_used = state
-
-            if x == r-1 and y == c-1:
-                return dist
-
-            for i in range(4):
-                nx = x + dirs[i][0]
-                ny = y + dirs[i][1]
-                if 0<=nx<r and 0<=ny<c:
-                    k_new = k_used
+                if 0<=nx<m and 0<=ny<n:
+                    k_used = k_
                     if grid[nx][ny] == 1:
-                        k_new += 1  # very important do not repeat any variables
+                        k_used += 1
+                    if k_used<= k and (nx, ny, k_used) not in vis:
+                        q.append((nx, ny, k_used, steps+1))
+                        vis.add((nx, ny, k_used))
+                        
 
-                    new_state = (nx, ny, k_new)
-                    if k_new <= k and new_state not in vis:
-                        vis.add(new_state)
-                        q.append((new_state, dist+1))
-        
         return -1
+            
+
