@@ -1,0 +1,7 @@
+import pandas as pd
+
+def count_rich_customers(store: pd.DataFrame) -> pd.DataFrame:
+    df = store.query('amount > 500')
+    cnt = df['customer_id'].nunique()
+    df = pd.DataFrame({"rich_count" : [cnt]})
+    return df
