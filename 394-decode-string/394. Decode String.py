@@ -3,22 +3,23 @@ class Solution:
         st = collections.deque()
         ans = ""
 
+        curr_num = 0
+        curr_str = ""
+        # very important in the case the size does not fit
         for ch in s:
-            if ch != ']':
-                st.append(ch)
+            if ch.isdigit():
+                curr_num = curr_num*10 + int(ch)
+            elif ch == '[':
+                st.append((curr_str, curr_num))
+                curr_num = 0
+                curr_str = ''
+            elif ch == ']':
+                prev_str, multiplier = st.pop()
+                curr_str = prev_str + curr_str * multiplier
             else:
-                temp = []
-                cnt = []
-                while st and st[-1] != '[':
-                    temp.append(st.pop())
-                st.pop()
-                temp = "".join(temp[::-1])
-                # one main issue keep on popping till numbers are there
-                while st and '0'<=st[-1]<='9':
-                    cnt.append(st.pop())
-                cnt = "".join(cnt[::-1])
-                temp = temp * int(cnt)
-                st.append(temp)
-        # print(st)
-        return "".join(st)
+                curr_str += ch
+        
+        return curr_str
+
+        
                     
