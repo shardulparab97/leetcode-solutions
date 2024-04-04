@@ -2,16 +2,16 @@ class Solution:
     def maxDepth(self, s: str) -> int:
         st = collections.deque()
         ans = float("-inf")
+        cnt = 0
+
         for c in s:
             if c == "(":
-                st.append(c)
-                ans = max(ans, len(st))
+                cnt += 1
             elif c == ")":
-                st.pop()
-            else:
-                continue
-
+                cnt -= 1
+            ans = max(ans, cnt)
+        
         return ans if ans != float("-inf") else 0
 
-
+        
         
