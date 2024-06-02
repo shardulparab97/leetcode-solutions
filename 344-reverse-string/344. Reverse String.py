@@ -3,5 +3,10 @@ class Solution:
         """
         Do not return anything, modify s in-place instead.
         """
-        s.reverse()
+        n = len(s)
+        lo, hi = 0, n-1
+        while lo < hi:
+            s[lo], s[hi] = s[hi], s[lo]
+            lo += 1
+            hi -= 1
         return s
