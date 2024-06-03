@@ -5,14 +5,13 @@ class Solution:
         # ans = 0
         while s_ptr < l_s  and t_ptr < l_t :
             if s[s_ptr] == t[t_ptr]:
-                s_ptr += 1
+                # s_ptr += 1
                 t_ptr += 1
-            else:
-                s_ptr += 1
+            s_ptr += 1
 
         # print(s_ptr)
         # print(t_ptr)
-        if t_ptr == l_t:
-            return 0
-        else:
-            return l_t - t_ptr 
+        # if t_ptr == l_t:
+        #     return 0
+        # else:
+        return l_t - t_ptr 
