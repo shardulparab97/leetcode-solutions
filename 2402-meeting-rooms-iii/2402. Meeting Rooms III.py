@@ -2,24 +2,23 @@ class Solution:
     def mostBooked(self, n: int, meetings: List[List[int]]) -> int:
         meetings.sort()
 
-        len_meetings = len(meetings)
-        meetings_dict =  [0] * n
-        unused = [i for i in range(n)]
         used = []
+        unused = [i for i in range(n)]
 
-        for i in range(len_meetings):
-            while used and used[0][0] <= meetings[i][0]:
-                _, room = heapq.heappop(used)
-                heapq.heappush(unused, room)
-            
-            if unused:
-                room = heapq.heappop(unused)
-                heapq.heappush(used, (meetings[i][1], room))
+        meetings_dict = [0] * n
+
+        for m in meetings:
+            st, en = m
+            while used and used[0][0] <= st:
+                _, room_number = heapq.heappop(used)
+                heapq.heappush(unused, room_number)
+            if unused: # soom rooms available
+                room_number = heapq.heappop(unused)
+                heapq.heappush(used, (en, room_number))
             else:
-                used_end, room = heapq.heappop(used)
-                heapq.heappush(used, (used_end + meetings[i][1]-meetings[i][0], room))
-            
-            meetings_dict[room] += 1
+                end_time, room_number = heapq.heappop(used)
+                heapq.heappush(used, (end_time + en - st, room_number))
+            meetings_dict[room_number] += 1
 
-        # print(meetings_dict)
+        print(meetings_dict)
         return meetings_dict.index(max(meetings_dict))
