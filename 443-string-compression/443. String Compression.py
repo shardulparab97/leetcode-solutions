@@ -1,46 +1,17 @@
 class Solution:
     def compress(self, chars: List[str]) -> int:
-        n = len(chars)
-        idx = 0
-
-        curr_char = ''
-        cnt_char = 0
         i = 0
-
-        while i < n:
-            if cnt_char == 0:
-                curr_char = chars[i]
-
-            if chars[i] == curr_char:
-                cnt_char += 1
-            else:
-                if cnt_char == 1:
-                    chars[idx] = curr_char
-                    idx += 1
-                else:
-                    chars[idx] = curr_char
-                    idx += 1
-                    cnt_char = list(str(cnt_char))
-                    for cnt in cnt_char:    
-                        chars[idx] = cnt
-                        idx += 1
-
-                i -= 1
-                cnt_char = 0
-            i += 1
-            # now only for the last case
-        if cnt_char == 1:
-                chars[idx] = curr_char
-                idx += 1
-        else:
-                chars[idx] = curr_char
-                idx += 1
-                cnt_char = list(str(cnt_char))
-                for cnt in cnt_char:    
-                        chars[idx] = cnt
-                        idx += 1
-
-                
-        return idx
-                
-
+        res = 0
+        while i < len(chars):
+            group_length = 1
+            while (i + group_length < len(chars)
+                   and chars[i + group_length] == chars[i]):
+                group_length += 1
+            chars[res] = chars[i]
+            res += 1
+            if group_length > 1:
+                str_repr = str(group_length)
+                chars[res:res+len(str_repr)] = list(str_repr)
+                res += len(str_repr)
+            i += group_length
+        return res
