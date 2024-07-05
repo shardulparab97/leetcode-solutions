@@ -1,0 +1,23 @@
+class Solution:
+    def isBipartite(self, graph: List[List[int]]) -> bool:
+        n = len(graph)
+        vis = [-1] * n
+
+        def checkBipartite(node, col):
+            vis[node] = col
+
+            for nei in graph[node]:
+                if vis[nei] == -1:
+                    if checkBipartite(nei, int(not col)) == False:
+                        return False
+                elif vis[nei] == vis[node]:
+                    return False
+
+            return True
+
+        for node in range(n):
+            if vis[node] == -1:
+                if checkBipartite(node, 0) == False:
+                    return False
+            
+        return True
