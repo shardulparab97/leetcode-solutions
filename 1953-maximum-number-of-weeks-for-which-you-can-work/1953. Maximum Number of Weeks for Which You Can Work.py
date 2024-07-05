@@ -1,8 +1,16 @@
 class Solution:
     def numberOfWeeks(self, milestones: List[int]) -> int:
-        milestones.sort(reverse = True)
-        sm = sum(milestones[1:])
+        mx = float("-inf")
+        s = 0
+        for m in milestones:
+            if m > mx:
+                mx = m
+            s += m
 
-        if milestones[0] <= sm:
-            return sum(milestones)
-        return 2*sm + 1
+        s1 = s - mx
+
+        # print(s, s1, mx)
+
+        if mx <= s1:
+            return s
+        return 2*s1 + 1
