@@ -2,7 +2,7 @@ class Solution:
     def minDays(self, bloomDay: List[int], m: int, k: int) -> int:
         ans = -1
 
-        lo, hi = 0, 1e9
+        lo, hi = 0, max(bloomDay)
         len_bd = len(bloomDay)
 
         def check_bouquets(days, m, k):
