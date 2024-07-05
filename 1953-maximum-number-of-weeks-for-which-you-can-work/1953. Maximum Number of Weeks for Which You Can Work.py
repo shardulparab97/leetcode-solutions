@@ -1,12 +1,7 @@
 class Solution:
     def numberOfWeeks(self, milestones: List[int]) -> int:
-        mx = float("-inf")
-        s = 0
-        for m in milestones:
-            if m > mx:
-                mx = m
-            s += m
-
+        mx = max(milestones)
+        s = sum(milestones)
         s1 = s - mx
 
         # print(s, s1, mx)
