@@ -12,7 +12,7 @@ class Solution:
 
             if last_day < total_duration:
                 days_to_be_removed = heapq.heappop(pq)
-                total_duration += days_to_be_removed
+                total_duration -=  -1*days_to_be_removed
 
         return len(pq)
 
