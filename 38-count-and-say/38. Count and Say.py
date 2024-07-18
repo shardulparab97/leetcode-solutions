@@ -1,31 +1,29 @@
 class Solution:
-    def create_string(self, val) -> str:
-      
-      res = ""
-      n = len(val)-1
-      lo, hi = 0, 0
-
-      while hi <= n:
-          while hi <= n and (val[lo] == val[hi]):
-            hi += 1
-          
-          res += f"{hi-lo}{val[lo]}"
-          lo = hi
-
-      return res
-
     def countAndSay(self, n: int) -> str:
-      if n == 1:
-        return "1"
+        if n==1:
+            return "1"
 
-      val = "1"
-      ctr = 2
+        ctr = 2
+        val = "1"
 
-      while ctr <= n:
-        val = self.create_string(val)
-        ctr += 1
+        def create_str(val):
+            len_val = len(val)
 
-      return val
+            lo, hi = 0, 0
+            new_val = ""
+            while hi < len_val:
+                while hi < len_val and val[lo] == val[hi]:
+                    hi += 1
+
+                new_val += f"{hi-lo}{val[lo]}"
+                lo = hi
+            
+            return new_val
 
 
-        
+
+        while ctr <= n:
+            val = create_str(val)
+            ctr += 1
+
+        return val
