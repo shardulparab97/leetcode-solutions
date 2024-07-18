@@ -1,41 +1,38 @@
-class Node:
-    def __init__(self):
+class TrieNode:
+    def __init__(self, ch):
+        self.ch = ch
+        self.children = {}
         self.isWord = False
-        self.children = dict()
 
 class Solution:
     def wordBreak(self, s: str, wordDict: List[str]) -> bool:
+        root = TrieNode('')
         wordDict = set(wordDict)
-        root = Node()
-
-        # 0(mk) time complexity 
-        # making the trie
         for word in wordDict:
-            node = root
+            curr = root
             for w in word:
-                if w not in node.children:
-                    node.children[w] = Node()
-                node = node.children[w]
-            node.isWord = True
+                if w not in curr.children:
+                    node = TrieNode(w)
+                    curr.children[w] = node
+                curr = curr.children[w]
 
-        len_s = len(s)
-        dp = [False] * len_s
+            curr.isWord = True
+        
+        n = len(s)
+        dp = [False] * n
+        i = 0
 
-        for i in range(len_s):
+        for i in range(n):
             if i == 0 or dp[i-1] == True:
-                curr = root # means we have found a word here
-                for j in range(i, len_s):
-                        ch = s[j]
-                        if ch in curr.children:
-                            curr = curr.children[ch]
-                            if curr.isWord == True:
-                                dp[j] = True 
-                                if j == len_s - 1:
-                                    return True
-                        else:
-                            break
+                curr = root
+                for j in range(i, n):
+                    if s[j] in curr.children:
+                        curr = curr.children[s[j]]
+                        if curr.isWord:
+                            dp[j] = True
+                            if j == n - 1:
+                                return True
+                    else:
+                        break
 
         return dp[-1]
-                    
-
-        
