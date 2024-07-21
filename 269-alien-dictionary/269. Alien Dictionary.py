@@ -1,30 +1,50 @@
 class Solution:
     def alienOrder(self, words: List[str]) -> str:
-        #TOPOLOGICAL SORT AND POST ORDER DFS
-        adj ={ c: set() for word in words for c in word}
-        for i in range(len(words)-1):
-            w1 = words[i]
-            w2 = words[i+1]
-            minLen = min(len(w1), len(w2))
-            if len(w1) > len(w2) and w1[:minLen] == w2[:minLen]:
+        # words = list(set(words))
+        g = {c: set() for word in words for c in word}
+
+        for w_idx in range(len(words) - 1):
+            w1 = words[w_idx]
+            w2 = words[w_idx + 1]
+            min_len = min(len(w1), len(w2))
+            if len(w1) > len(w2) and w1[:min_len] == w2[:min_len]:
                 return ""
-            for j in range(minLen):
-                if w1[j] != w2[j]:
-                    adj[w1[j]].add(w2[j])
-                    break
-        visited = {} #True = visited and path , False = visited
-        path = []
-        def dfs(c):
-            if c in visited:
-                return visited[c]
-            visited[c] = True
-            for nei in adj[c]:
-                if dfs(nei):
+            else:
+                for i in range(min_len):
+                    if w1[i] != w2[i]:
+                        g[w1[i]].add(w2[i])
+                        break
+
+        
+
+
+        ans = collections.deque()
+        vis = set()
+        inCycle = set()
+
+        def dfs(node):
+            # print(node)
+            vis.add(node)
+            inCycle.add(node)
+
+            # check for cycles
+            for nei in g[node]:
+                if nei not in vis:
+                    if dfs(nei) == False:
+                        return False
+                elif nei in inCycle:
+                    return False
+
+            inCycle.remove(node)
+            ans.appendleft(node)
+            return True
+        # print(g)
+        # for node, _ in g.items():
+        #     print(node)
+        for node in list(g.keys()):
+            # print(node)
+            if node not in vis:
+                if dfs(node) == False:
                     return ""
-            visited[c] = False
-            path.append(c)
-        for c in adj:
-            if dfs(c):
-                return ""
-        path.reverse()
-        return "".join(path)
+
+        return ''.join(list(ans))
