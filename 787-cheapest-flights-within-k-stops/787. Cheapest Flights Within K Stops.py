@@ -1,32 +1,31 @@
 class Solution:
     def findCheapestPrice(self, n: int, flights: List[List[int]], src: int, dst: int, k: int) -> int:
-        dist = [float("inf")] * n
-        q = collections.deque()
-
         g = [[] for _ in range(n)]
 
-        for f in flights:
-            g[f[0]].append((f[1], f[2]))
-            # g[f[1]].append((f[0], f[2]))
+        for u, v, w in flights:
+            g[u].append((v, w))
+            # g[v].append((u, w))
+        k += 1
+        vis = set()
+        pq = []
+        heapq.heappush(pq, (0, src, k))
+        min_dist = float("inf")
 
-        # k, node, distance
-        q.append((0, src, 0))
-        dist[src] = 0
+        while pq:
+            dist, node, k_ = heapq.heappop(pq)
 
-        while q:
-            stops, node, distance = q.popleft()
+            if (node, k_) in vis:
+                continue
 
-            for n in g[node]:
-                if stops > k: 
-                    continue
-                next_node = n[0]
-                edge_weight = n[1]
-                if (dist[next_node] > distance + edge_weight) and stops<=k : # important because last node stop is not counted
-                    dist[next_node] = distance + edge_weight
-                    q.append((stops+1, next_node, dist[next_node]))
-        
-        return dist[dst] if dist[dst] != float("inf") else -1
-                
+            if node == dst:
+                return dist
+                # min_dist = min(min_dist, dist)
+                # continue
+            
+            vis.add((node, k_))
 
+            for nei, w in g[node]:
+                if k_ > 0 and (nei, k_ - 1) not in vis:
+                    heapq.heappush(pq, (dist+w, nei, k_ - 1))
 
-
+        return -1
