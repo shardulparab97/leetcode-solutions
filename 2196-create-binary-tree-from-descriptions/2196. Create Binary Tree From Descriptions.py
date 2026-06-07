@@ -7,32 +7,28 @@
 class Solution:
     def createBinaryTree(self, descriptions: List[List[int]]) -> Optional[TreeNode]:
         treeDict = {}
-        has_parents = set()
-         # find root - no parents
-        for p, c, isLeft in descriptions:
+        hasparents = set()
+
+        for p, c, d in descriptions:
             if p not in treeDict:
-                node = TreeNode(val = p)
-                treeDict[p] = node
-            else:
-                node = treeDict[p]
+                newNode = TreeNode(val = p)
+                treeDict[p] = newNode
+            else: 
+                newNode = treeDict[p]
 
             if c not in treeDict:
-                childNode = TreeNode(val = c)
+                childNode = TreeNode(val=c)
                 treeDict[c] = childNode
             else:
                 childNode = treeDict[c]
             
-            if isLeft:
-                node.left = childNode
+            if d == 1:
+                newNode.left = childNode
             else:
-                node.right = childNode
-            
-            has_parents.add(c)
+                newNode.right = childNode
 
-        rootVal = [p for p,_,_ in descriptions if p not in has_parents][0]
-        # print(rootVal)
-        return treeDict[rootVal]
-
-
-
+            hasparents.add(c)
         
+        rootval = [p for p,_,_ in descriptions if p not in hasparents][0]
+
+        return treeDict[rootval]
